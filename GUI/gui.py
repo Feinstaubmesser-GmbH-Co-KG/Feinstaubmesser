@@ -5,10 +5,14 @@ from PIL import Image
 root = CTk()
 
 # Größe und Titel des Fensters
-root.geometry("900x700")
+root.geometry("850x650")
 root.title("Feinstaubmesser GmbH & Co. KG™")
 
 # Spacing für Positionierung
+spacing = CTkLabel(master=root, text="\n"
+                                     "\n")
+
+spacing2 = CTkLabel(master=root, text="\n")
 
 # Labels definieren
 info_text = CTkLabel(master=root, text="Willkommen zum Feinstaubmesser! \n"
@@ -21,45 +25,84 @@ typauswahl_text = CTkLabel(master=root, height=80,
 
 wertauswahl_text = CTkLabel(master=root, height=80,
                             text="Wähle ob du Temperatur, Luftfeuchtigkeit oder Feinstaubbelastung möchtest:")
+
+# Datumseingabe
+datumseingabe = CTkEntry(master=root, placeholder_text="Datum bitte im Format: YYYYMMDD", width=217)
+
 # Bilder einfügen
-sonne = CTkImage(Image.open("Pics\Sonne.png"), size=(180, 180))
-wolken = CTkImage(Image.open("Pics\Wolke.png"), size=(250, 250))
-sonne_place = CTkLabel(master=root, image=sonne, text="", width=230, height=230)
+sonne = CTkImage(Image.open("Pics\Sonne.png"), size=(150, 150))
+wolken = CTkImage(Image.open("Pics\Wolke.png"), size=(160, 100))
+sonne_place = CTkLabel(master=root, image=sonne, text="", width=200, height=180)
 wolke_place = CTkLabel(master=root, image=wolken, text="")
 
 # Auswahl Typ
-typauswahl = IntVar()
-typauswahl.get()
-temperatur = CTkRadioButton(master=root, text="Temperatur", variable=typauswahl, value=1)
-feinstaubbelastung = CTkRadioButton(master=root, variable=typauswahl, value=2, text="Feinstaubbelastung")
-luftfeuchtigkeit = CTkRadioButton(master=root, variable=typauswahl, value=3, text="Luftfeuchtigkeit")
+typauswahl = StringVar()
+temperatur = CTkRadioButton(master=root, text="Temperatur", variable=typauswahl, value="Temperatur")
+feinstaubbelastung = CTkRadioButton(master=root, variable=typauswahl, value="Feinstaubbelastung",
+                                    text="Feinstaubbelastung")
+luftfeuchtigkeit = CTkRadioButton(master=root, variable=typauswahl, value="Luftfeuchtigkeit", text="Luftfeuchtigkeit")
 
 # Auswahl Wert
-wertauswahl = IntVar()
-wertauswahl.get()
-hoechster = CTkRadioButton(master=root, text="Höchster Wert", variable=wertauswahl, value=1)
-tiefster = CTkRadioButton(master=root, variable=wertauswahl, value=2, text="Tiefster Wert")
-durchschnitt = CTkRadioButton(master=root, variable=wertauswahl, value=3, text="Niedrigster Wert")
+wertauswahl = StringVar()
+hoechster = CTkRadioButton(master=root, variable=wertauswahl, value="Höchster Wert", text="Höchster Wert")
+tiefster = CTkRadioButton(master=root, variable=wertauswahl, value="Tiefster Wert", text="Tiefster Wert")
+durchschnitt = CTkRadioButton(master=root, variable=wertauswahl, value="Durchschnittlicher Wert",
+                              text="Durchschnittlicher Wert")
+
+
+# Auswahl bestätigen (Die 200 stellen sicher, dass die Ausgabe gelöscht wird) ;)
+def auswahl_bes():
+    ausgabe.delete("0.0", "200.0")
+    text = ausgabe_gen()
+    ausgabe.insert("0.0", text=text)
+
+
+auswahl_gen = CTkButton(master=root, text="Auswahl bestätigen", command=auswahl_bes)
+
+
+# Ausgabe
+def ausgabe_gen():
+    if datumseingabe.get() == "" or typauswahl.get() == "" or wertauswahl.get() == "":
+        finale_ausgabe = "Bitte vervollständige deine Eingabe"
+    else:
+        finale_ausgabe = datumseingabe.get() + typauswahl.get() + wertauswahl.get()
+    return finale_ausgabe
+
+
+ausgabe = CTkTextbox(master=root, width=150, height=40, border_width=2)
+
+# ausgabe.insert("0.0")
 
 # Platzierungen
-# # Info Texte
+# # Info Texte + Datumseingabe
 info_text.grid(row=0, column=1)
-typauswahl_text.grid(row=1, column=1)
-wertauswahl_text.grid(row=3, column=1)
+datumseingabe.grid(row=1, column=1, sticky="n")
+typauswahl_text.grid(row=2, column=1)
+wertauswahl_text.grid(row=5, column=1)
 
 # # Bilder
 sonne_place.grid(column=0, row=0)
-wolke_place.grid(column=2, row=5)
+wolke_place.grid(column=2, row=9)
 
 # # Typ Auswahl
-temperatur.grid(row=2, column=0)
-feinstaubbelastung.grid(row=2, column=1)
-luftfeuchtigkeit.grid(row=2, column=2)
+temperatur.grid(row=3, column=0, sticky="e")
+feinstaubbelastung.grid(row=3, column=1)
+luftfeuchtigkeit.grid(row=3, column=2, sticky="w")
 
 # # Wert Auswahl
-hoechster.grid(row=4, column=0)
-tiefster.grid(row=4, column=1)
-durchschnitt.grid(row=4, column=2)
+hoechster.grid(row=6, column=0, sticky="e")
+tiefster.grid(row=6, column=1)
+durchschnitt.grid(row=6, column=2, sticky="w")
+
+# # Auswahl bestätigen
+auswahl_gen.grid(row=8, column=1, sticky="s")
+
+# # Ausgabe
+ausgabe.grid(row=9, column=1)
+
+# # Spacing
+spacing.grid(row=4, column=1)
+spacing2.grid(row=7, column=1)
 
 # Fenster 2/2
 root.mainloop()
