@@ -29,8 +29,8 @@ def connect() -> [None, MySQLConnection]:
 db_connection = connect()
 
 
-def execute(sql) -> list:
-    cursor = db_connection.cursor()
+def execute(sql) -> dict:
+    cursor = db_connection.cursor(dictionary=True)
     cursor.execute(sql)
 
     return cursor.fetchall()

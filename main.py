@@ -9,5 +9,5 @@ def start():
     # Start Tkinter GUI here...
     # Fetch required data for "Start menu"???
     # continue in button logic descriptor for further database calls...
-    print(configuration.execute("SELECT * FROM sensor_3360"))
+    print(configuration.execute("SELECT * FROM sensor_3660"))
     print("Exiting...")

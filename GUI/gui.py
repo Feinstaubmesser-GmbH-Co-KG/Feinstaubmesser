@@ -1,5 +1,6 @@
 from customtkinter import *
 from PIL import Image
+from database.api import SensorApi as api
 
 # Fenster 1/2
 root = CTk()
@@ -27,7 +28,7 @@ wertauswahl_text = CTkLabel(master=root, height=80,
                             text="Wähle ob du Temperatur, Luftfeuchtigkeit oder Feinstaubbelastung möchtest:")
 
 # Datumseingabe
-datumseingabe = CTkEntry(master=root, placeholder_text="Datum bitte im Format: YYYYMMDD", width=217)
+datumseingabe = CTkEntry(master=root, placeholder_text="Datum bitte im Format: YYYY-MM-DD", width=217)
 
 # Bilder einfügen
 sonne = CTkImage(Image.open("Pics\Sonne.png"), size=(150, 150))
@@ -65,13 +66,39 @@ def ausgabe_gen():
     if datumseingabe.get() == "" or typauswahl.get() == "" or wertauswahl.get() == "":
         finale_ausgabe = "Bitte vervollständige deine Eingabe"
     else:
-        finale_ausgabe = datumseingabe.get() + typauswahl.get() + wertauswahl.get()
+        sensor = None
+        type = None
+
+        if typauswahl.get() == "Temperatur":
+            sensor = 3659
+            type = "temperature"
+        elif typauswahl.get() == "Feinstaubbelastung":
+            sensor = 3660
+            type = "P1"
+        elif typauswahl.get() == "Luftfeuchtigkeit":
+            sensor = 3659
+            type = "humidity"
+
+        result = api.get_sensor_data_by_date_type_and_value(sensor_id=sensor, date=datumseingabe.get(), type=type, value=wertauswahl.get())
+        text = ""
+        for entry in result:
+            if isinstance(entry, dict):
+                for key, value in entry.items():
+                    text += f"{value}"
+            else:
+                for list in entry:
+                    for key, value in list.items():
+                        k = key.replace("(", "").replace(")", "").replace("MIN", "").replace("MAX", "").replace("AVG", "")
+
+                        text += f"{k}: {value} \n"
+
+        return text
+
     return finale_ausgabe
 
 
-ausgabe = CTkTextbox(master=root, width=150, height=40, border_width=2)
+ausgabe = CTkTextbox(master=root, width=150, height=50, border_width=2)
 
-# ausgabe.insert("0.0")
 
 # Platzierungen
 # # Info Texte + Datumseingabe
