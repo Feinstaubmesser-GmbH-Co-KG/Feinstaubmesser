@@ -1,7 +1,8 @@
 import mysql.connector
 from mysql.connector import errorcode, MySQLConnection
+import api.website_collecting as wc
 
-db_url = "10.8.0.1"
+db_url = "45.88.109.46"
 db_port = 3306
 db_schema_name = "feinstaub"
 db_name = "feinstaub"
@@ -28,6 +29,8 @@ def connect() -> [None, MySQLConnection]:
 
 db_connection = connect()
 
+con = wc.DataCollector()
+con.collect(db_url, db_port, db_schema_name, db_name, db_passwd)
 
 def execute(sql) -> dict:
     cursor = db_connection.cursor(dictionary=True)
