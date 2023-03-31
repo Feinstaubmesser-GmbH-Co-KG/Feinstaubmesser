@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import errorcode, MySQLConnection
-import api.website_collecting as wc
+import database.api.website_collecting as wc
 
 db_url = "45.88.109.46"
 db_port = 3306
