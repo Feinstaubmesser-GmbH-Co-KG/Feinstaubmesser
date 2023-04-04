@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from sqlalchemy import create_engine
+from sqlalchemy import text
 import pymysql
 
 class DataCollector:
@@ -39,11 +40,15 @@ class DataCollector:
                                    .format(db_name, db_passwd, db_url, db_port, db_schema_name), pool_recycle=3600)
         db_connection = sql_engine.connect()
 
+        db_connection.execute(text("DELETE FROM sensor_3659"))
+        db_connection.execute(text("DELETE FROM sensor_3660"))
+
         for elem in dht22_hrefs:
             try:
                 data = pd.read_csv(elem, sep=';')
                 df = pd.DataFrame(data, columns=['timestamp', 'temperature', 'humidity'])
-                df.to_sql('sensor_3659', db_connection, if_exists='replace', index=False)
+                df["timestamp"] = pd.to_datetime(df["timestamp"])
+                df.to_sql('sensor_3660', db_connection, if_exists='append', index=False)
 
             except HTTPError:
                 print("WARNING - Got HttpError for {}".format(elem))
@@ -52,6 +57,7 @@ class DataCollector:
             try:
                 data = pd.read_csv(elem, sep=';')
                 df = pd.DataFrame(data, columns=['timestamp', 'P1', 'P2'])
-                df.to_sql('sensor_3660', db_connection, if_exists='replace', index=False)
+                df["timestamp"] = pd.to_datetime(df["timestamp"])
+                df.to_sql('sensor_3659', db_connection, if_exists='append', index=False)
             except HTTPError:
                 print("WARNING - Got HttpError for {}".format(elem))

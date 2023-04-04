@@ -31,8 +31,8 @@ wertauswahl_text = CTkLabel(master=root, height=80,
 datumseingabe = CTkEntry(master=root, placeholder_text="Datum bitte im Format: YYYY-MM-DD", width=217)
 
 # Bilder einfügen
-sonne = CTkImage(Image.open("Pics\Sonne.png"), size=(150, 150))
-wolken = CTkImage(Image.open("Pics\Wolke.png"), size=(160, 100))
+sonne = CTkImage(Image.open("Pics/Sonne.png"), size=(150, 150))
+wolken = CTkImage(Image.open("Pics/Wolke.png"), size=(160, 100))
 sonne_place = CTkLabel(master=root, image=sonne, text="", width=200, height=180)
 wolke_place = CTkLabel(master=root, image=wolken, text="")
 
@@ -70,13 +70,13 @@ def ausgabe_gen():
         type = None
 
         if typauswahl.get() == "Temperatur":
-            sensor = 3659
+            sensor = 3660
             type = "temperature"
         elif typauswahl.get() == "Feinstaubbelastung":
-            sensor = 3660
+            sensor = 3659
             type = "P1"
         elif typauswahl.get() == "Luftfeuchtigkeit":
-            sensor = 3659
+            sensor = 3660
             type = "humidity"
 
         result = api.get_sensor_data_by_date_type_and_value(sensor_id=sensor, date=datumseingabe.get(), type=type, value=wertauswahl.get())
