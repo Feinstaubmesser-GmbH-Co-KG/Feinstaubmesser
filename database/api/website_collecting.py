@@ -5,13 +5,12 @@ from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from sqlalchemy import create_engine
 from sqlalchemy import text
-import pymysql
 
 class DataCollector:
     # Constructor - setzte als default das Jahr starten von gestern
     def __init__(self):
         self.end_date = date.today() - relativedelta(days=1)
-        self.start_date = self.end_date - relativedelta(years=1)
+        self.start_date = self.end_date - relativedelta(years=2)
 
         self.delta = self.end_date - self.start_date   # returns timedelta
 
