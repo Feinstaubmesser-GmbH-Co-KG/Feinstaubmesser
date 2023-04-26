@@ -40,8 +40,8 @@ datenbank_update = CTkButton(master=root, text="Daten aktualisieren", command=up
 datumseingabe = CTkEntry(master=root, placeholder_text="Datum bitte im Format: YYYY-MM-DD", width=217)
 
 # Bilder einfügen
-sonne = CTkImage(Image.open("Pics/Sonne.png"), size=(150, 150))
-wolken = CTkImage(Image.open("Pics/Wolke.png"), size=(160, 100))
+sonne = CTkImage(Image.open("GUI/Pics/Sonne.png"), size=(150, 150))
+wolken = CTkImage(Image.open("GUI/Pics/Wolke.png"), size=(160, 100))
 sonne_place = CTkLabel(master=root, image=sonne, text="", width=200, height=180)
 wolke_place = CTkLabel(master=root, image=wolken, text="")
 

@@ -1,5 +1,7 @@
-import main
+import GUI.gui
 
 
 if __name__ == "__main__":
-    main.start()
+    print("starting...")
+    exec(open('gui.py').read())
+    print("exiting...")
