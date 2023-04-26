@@ -1,6 +1,12 @@
 from customtkinter import *
 from PIL import Image
 from database.api import SensorApi as api
+from database import Configuration as config
+
+
+def update():
+    config.con.collect(config.db_url, config.db_port, config.db_schema_name, config.db_name, config.db_passwd)
+
 
 # Fenster 1/2
 root = CTk()
@@ -26,6 +32,9 @@ typauswahl_text = CTkLabel(master=root, height=80,
 
 wertauswahl_text = CTkLabel(master=root, height=80,
                             text="Wähle ob du Temperatur, Luftfeuchtigkeit oder Feinstaubbelastung möchtest:")
+
+# Update Button
+datenbank_update = CTkButton(master=root, text="Daten aktualisieren", command=update)
 
 # Datumseingabe
 datumseingabe = CTkEntry(master=root, placeholder_text="Datum bitte im Format: YYYY-MM-DD", width=217)
@@ -79,7 +88,8 @@ def ausgabe_gen():
             sensor = 3660
             type = "humidity"
 
-        result = api.get_sensor_data_by_date_type_and_value(sensor_id=sensor, date=datumseingabe.get(), type=type, value=wertauswahl.get())
+        result = api.get_sensor_data_by_date_type_and_value(sensor_id=sensor, date=datumseingabe.get(), type=type,
+                                                            value=wertauswahl.get())
         text = ""
         for entry in result:
             if isinstance(entry, dict):
@@ -88,7 +98,8 @@ def ausgabe_gen():
             else:
                 for list in entry:
                     for key, value in list.items():
-                        k = key.replace("(", "").replace(")", "").replace("MIN", "").replace("MAX", "").replace("AVG", "")
+                        k = key.replace("(", "").replace(")", "").replace("MIN", "").replace("MAX", "").replace("AVG",
+                                                                                                                "")
 
                         text += f"{k}: {value} \n"
 
@@ -99,13 +110,15 @@ def ausgabe_gen():
 
 ausgabe = CTkTextbox(master=root, width=150, height=50, border_width=2)
 
-
 # Platzierungen
 # # Info Texte + Datumseingabe
 info_text.grid(row=0, column=1)
 datumseingabe.grid(row=1, column=1, sticky="n")
 typauswahl_text.grid(row=2, column=1)
 wertauswahl_text.grid(row=5, column=1)
+
+# # Update Button
+datenbank_update.grid(row=0, column=2, sticky="ne", pady=10)
 
 # # Bilder
 sonne_place.grid(column=0, row=0)

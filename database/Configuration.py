@@ -30,7 +30,6 @@ def connect() -> [None, MySQLConnection]:
 db_connection = connect()
 
 con = wc.DataCollector()
-#con.collect(db_url, db_port, db_schema_name, db_name, db_passwd)
 
 def execute(sql) -> dict:
     cursor = db_connection.cursor(dictionary=True)
