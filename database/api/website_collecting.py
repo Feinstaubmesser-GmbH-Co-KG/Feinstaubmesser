@@ -10,7 +10,7 @@ class DataCollector:
     # Constructor - setzte als default das Jahr starten von gestern
     def __init__(self):
         self.end_date = date.today() - relativedelta(days=1)
-        self.start_date = date(2022, 4, 13)
+        self.start_date = date(2022, 3, 14)
 
         self.delta = self.end_date - self.start_date   # returns timedelta
 
