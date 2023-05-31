@@ -2,6 +2,7 @@ from customtkinter import *
 from PIL import Image
 from database.api import SensorApi as api
 from database import Configuration as config
+import os
 
 
 def update():
@@ -39,9 +40,14 @@ datenbank_update = CTkButton(master=root, text="Daten aktualisieren", command=up
 # Datumseingabe
 datumseingabe = CTkEntry(master=root, placeholder_text="Datum bitte im Format: YYYY-MM-DD", width=217)
 
+# Absolute Pfade für Bilder
+skript_verzeichnis = os.path.dirname(os.path.abspath(__file__))
+
+sonne_pfad = os.path.join(skript_verzeichnis, "Pics", "Sonne.png")
+wolke_pfad = os.path.join(skript_verzeichnis, "Pics", "Wolke.png")
 # Bilder einfügen
-sonne = CTkImage(Image.open("GUI/Pics/Sonne.png"), size=(150, 150))
-wolken = CTkImage(Image.open("GUI/Pics/Wolke.png"), size=(160, 100))
+sonne = CTkImage(Image.open(sonne_pfad), size=(150, 150))
+wolken = CTkImage(Image.open(wolke_pfad), size=(160, 100))
 sonne_place = CTkLabel(master=root, image=sonne, text="", width=200, height=180)
 wolke_place = CTkLabel(master=root, image=wolken, text="")
 
@@ -146,3 +152,5 @@ spacing2.grid(row=7, column=1)
 
 # Fenster 2/2
 root.mainloop()
+
+# Au
