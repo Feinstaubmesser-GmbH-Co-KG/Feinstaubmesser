@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ELEMENT DATENBANK (SENSOR3660, SENSOR3659)>
+<!ELEMENT SENSOR3660 (timestamp*, temperature*, humidity*)>
+<!ELEMENT SENSOR3659 (timestamp*, P1*, P2*)>
+<!ELEMENT timestamp (#PCDATA)>
+<!ELEMENT temperature (#PCDATA)>
+<!ELEMENT humidity (#PCDATA)>
+<!ELEMENT P1 (#PCDATA)>
+<!ELEMENT P2 (#PCDATA)>
